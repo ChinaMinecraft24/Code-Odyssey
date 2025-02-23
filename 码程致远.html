@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Code Odyssey - 从零到精通的开发之旅</title>
+    <style>
+        :root {
+            --primary-color: #2A2F45;
+            --accent-color: #4A90E2;
+            --text-light: #F8F9FA;
+        }
+ 
+        /* Dock栏高斯模糊效果 */
+        #dock {
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+            height: 60px;
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            box-shadow: 0 -2px 10px rgba(0,0,0,0.1);
+        }
+ 
+        /* 首页课程入口布局 */
+        .course-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            padding: 2rem;
+        }
+ 
+        .course-card {
+            background: linear-gradient(135deg, var(--primary-color), #3A3F55);
+            color: var(--text-light);
+            border-radius: 15px;
+            padding: 2rem;
+            transition: transform 0.3s ease;
+            cursor: pointer;
+        }
+ 
+        .course-card:hover {
+            transform: translateY(-5px);
+        }
+ 
+        /* 学习页面侧边导航 */
+        .side-nav {
+    --nav-width: 220px;
+    --collapsed-width: 60px;
+    position: fixed;
+    left: 0;
+    top: 20%;
+    width: var(--nav-width);
+    padding: 1.5rem 0.8rem;
+    background: rgba(42, 47, 69, 0.85); /* 保持原色系，降低透明度 */
+    backdrop-filter: blur(12px) saturate(180%);
+    -webkit-backdrop-filter: blur(12px) saturate(180%);
+    border-radius: 0 15px 15px 0;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    z-index: 1000;
+    box-shadow: 4px );
+}
+ 
+/* 悬停展开/折叠逻辑 */
+.side-nav:hover {
+    transform: translateX(0) !important;
+}
+ 
+/* 折叠状态 */
+.side-nav.collapsed {
+    transform: translateX(calc(var(--nav-width) * -0.8));
+    opacity: 0.6;
+    width: var(--collapsed-width);
+}
+ 
+/* 导航项紧凑布局 */
+.nav-item {
+    padding: 12px 16px;
+    margin: 6px 0;
+    border-radius: 8px;
+    color: rgba(248, 249, 250, 0.9);
+    white-space: nowrap;
+    overflow: hidden;
+    transition: 
+        background 0.3s,
+        transform 0.2s,
+        opacity 0.3s;
+}
+ 
+/* 折叠状态下的文字隐藏 */
+.side-nav.collapsed .nav-item span {
+    opacity: 0;
+    pointer-events: none;
+}
+ 
+/* 动态交互效果 */
+.nav-item:hover {
+    background: rgba(74, 144, 226, 0.25);
+    transform: translateX(8px);
+}
+ 
+/* 折叠触发按钮 */
+.nav-toggle {
+    position: absolute;
+    right: -40px;
+    top: 20px;
+    background: rgba(42, 47, 69, 0.9);
+    border: none;
+    width: 40px;
+    height: 40px;
+    border-radius: 0 8px 8px 0;
+    cursor: pointer;
+    color: white;
+    box-shadow: 2px 0 6px rgba(0,0,0,0.1);
+}
+ 
+/* 响应式适配 */
+@media (max-width: 768px) {
+    .side-nav {
+        --nav-width: 180px;
+        top: auto;
+        bottom: 80px;
+        transform: translateX(calc(var(--nav-width) * -0.8));
+    }
+    .side-nav.active {
+        transform: translateX(0);
+    }
+}
+    </style>
+</head>
+<body>
+    <!-- 首页 -->
+    <div id="homepage">
+        <header>
+            <h1>🚀 Code Odyssey</h1>
+            <p>从零开始征服开发世界的奥德赛之旅</p>
+        </header>
+ 
+        <div class="course-grid">
+            <div class="course-card" onclick="location.href='?course=harmonyos'">
+                <h2>HarmonyOS开发</h2>
+                <p>构建全场景智能生态</p>
+            </div>
+            <div class="course-card" onclick="location.href='?course=html'">
+                <h2>现代Web开发</h2>
+                <p>HTML5/CSS3/JavaScript全栈之路</p>
+            </div>
+            <div class="course-card" onclick="location.href='?course=fastapp'">
+                <h2>厂商快应用</h2>
+                <p>多端统一开发解决方案</p>
+            </div>
+        </div>
+ 
+        <nav id="dock">
+            <button>学习进度</button>
+            <button>代码实验室</button>
+            <button>开发者社区</button>
+        </nav>
+    </div>
+ 
+    <!-- 课程页面结构 -->
+    <div id="course-page" style="display:none;">
+        <aside class="side-nav">
+            <div class="nav-item">开发环境搭建</div>
+            <div class="nav-item">核心概念解析</div>
+            <div class="nav-item">组件化开发</div>
+            <div class="nav-item">实战项目演练</div>
+            <div class="nav-item">性能优化指南</div>
+        </aside>
+ 
+        <main class="content-area">
+            <!-- 此处注入动态内容 -->
+        </main>
+    </div>
+ 
+<script>
+    // 页面路由逻辑（示例）
+    const urlParams = new URLSearchParams(window.location.search);
+    if(urlParams.has('course')) {
+        document.getElementById('homepage').style.display = 'none';
+        document.getElementById('course-page').style.display = 'block';
+    }
+</script>
+</body>
+</html>
